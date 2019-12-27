@@ -10,7 +10,8 @@ interface UserInterface extends Document {
 const schema = new Schema({
   email: String,
   firstName: String,
-  lastName: String
+  lastName: String,
+  password: String
 }, {
   timestamps: true
 })
