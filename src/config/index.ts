@@ -7,6 +7,7 @@ dotenv.config({
 const env = process.env
 
 const appConfig = {
+  port: env.APP_PORT,
   dbUrl: `mongodb://${env.DB_HOST}:${env.DB_PORT}/${env.DB_DATABASE}`
 }
 
