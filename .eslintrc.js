@@ -24,5 +24,6 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    "ignoreRestArgs": true 
   }
 }
