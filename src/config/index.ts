@@ -8,7 +8,11 @@ const env = process.env
 
 const appConfig = {
   port: env.APP_PORT,
-  dbUrl: `mongodb://${env.DB_HOST}:${env.DB_PORT}/${env.DB_DATABASE}`
+  dbUrl: `mongodb://${env.DB_HOST}:${env.DB_PORT}/${env.DB_DATABASE}`,
+  secrets: {
+    jwt: env.JWT_SECRET,
+    jwtExp: '100d'
+  }
 }
 
 export default appConfig

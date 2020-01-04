@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 
 import routes from './routes'
 import appConfig from './config'
+import { protect } from '../src/middlewares/authMiddleware'
 
 class App {
   public express: express.Application
@@ -30,6 +31,7 @@ class App {
   }
 
   private routes (): void {
+    this.express.use('/api', protect)
     this.express.use(routes)
   }
 }

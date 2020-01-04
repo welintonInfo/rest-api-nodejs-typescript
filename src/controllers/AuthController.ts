@@ -1,24 +1,43 @@
 import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
 
 import User from '../schemas/User'
+import appConfig from '../config'
 
 class AuthController {
   public async login (req: Request, res: Response): Promise<Response> {
     const { email, password } =  req.body
 
-    const user = User.findOne({ email })
+    if (!email || !password) {
+      return res.status(400).send({ message: 'need email and password' })
+    }
+
+    const user = User.findOne({ email }).select('email password')
 
     if (!user) {
       return res.status(401).json({ message: 'User not found' })
     }
-
-    const validPassword = await (await user).comparePassword(password)    
+    
+    const validPassword = (await user).comparePassword(password)    
 
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid password' })
-    }
+    }    
+
+    const token = jwt.sign({ id: (await user)._id }, appConfig.secrets.jwt, {
+                    expiresIn: appConfig.secrets.jwtExp
+                  })
     
-    return res.status(200).send()
+    return res.status(200).json({ token })
+  }
+
+  /**
+   * Make a token to user authentication
+   */
+ private newToken(user_id: string): string {
+  return jwt.sign({ id: user_id }, appConfig.secrets.jwt, {
+      expiresIn: appConfig.secrets.jwtExp
+    })
   }
 }
 

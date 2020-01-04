@@ -2,11 +2,11 @@ import mongoose, { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 interface UserInterface extends Document {
+  _id: string
   email: string
   name: string
   admin: boolean
-  password: string
-  comparePassword(candidatePassword: string): Response<boolean> 
+  comparePassword(candidatePassword: string): boolean
 }
 
 const schema = new Schema({
@@ -26,7 +26,8 @@ const schema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
   }
 }, {
   timestamps: true

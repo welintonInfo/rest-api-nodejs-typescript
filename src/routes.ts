@@ -7,7 +7,8 @@ const routes = Router()
 
 routes.post('/login', AuthController.login)
 
-routes.get('/users', UsersController.index)
-routes.post('/users', UsersController.store)
+
+routes.get('/api/users', UsersController.index)
+routes.post('/api/users', UsersController.store)
 
 export default routes

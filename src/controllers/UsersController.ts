@@ -5,7 +5,7 @@ import User from '../schemas/User'
 
 class UsersController {
   public async index (req: Request, res: Response): Promise<Response> {
-    const users = await User.find({})
+    const users = await User.find({}).exec()
 
     return res.json(users)
   }
@@ -18,7 +18,7 @@ class UsersController {
 
   public async getUserForTesting (): Promise<any> {
     let user = await User.findOne({ email: 'jest@testing.com' })
-
+    
     if (!user) {      
       user = await User.create({
         name: 'jest testing',
