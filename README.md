@@ -11,7 +11,7 @@ Verify if everithing is ok.
 ## Basic Routes
 
 ### `post /login`
-params: 
+params: <br>
 {
   email,
   password
