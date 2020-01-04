@@ -6,3 +6,27 @@ In project directory, you can run:
 
 ### `yarn test`
 Verify if everithing is ok.
+
+
+## Basic Routes
+
+### `post /login`
+params: 
+{
+  email,
+  password
+}
+response: 
+{
+  token: jwt 
+}
+
+### `get /api/users`
+params: 
+{
+  "Authorization": "Bearer {{token}}
+}
+response: 
+{
+  users: {}
+}
