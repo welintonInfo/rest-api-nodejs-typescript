@@ -10,7 +10,7 @@ Verify if everithing is ok.
 
 ## Basic Routes
 
-### `post /login`
+### `POST /login`
 params: 
 <br>
 {
@@ -24,15 +24,31 @@ response:
   token: jwt 
 }
 
-### `get /api/users`
-params: 
-<br>
+## Routes /api need the Authorization header
+```
 {
-  "Authorization": "Bearer {{token}}
+  "Authorization": "Bearer {token}"
 }
-<br>
-response: 
-<br>
+
+```
+
+### `GET /api/users`
+```
 {
   users: {}
 }
+```
+
+### Products
+```
+GET /api/products
+
+```
+
+```
+POST /api/products
+{
+  "name": "Product name",
+  "price": 100 
+}
+```
