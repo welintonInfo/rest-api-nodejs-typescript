@@ -12,23 +12,28 @@ class AuthController {
       return res.status(400).send({ message: 'need email and password' })
     }
 
-    const user = User.findOne({ email }).select('email password')
+    try {
+      const user = User.findOne({ email }).select('email password')
+  
+      if (!user) {
+        return res.status(401).json({ message: 'User not found' })
+      }
+      
+      const validPassword = (await user).comparePassword(password)    
+  
+      if (!validPassword) {
+        return res.status(401).json({ message: 'Invalid password' })
+      }    
+  
+      const token = jwt.sign({ id: (await user)._id }, appConfig.secrets.jwt, {
+                      expiresIn: appConfig.secrets.jwtExp
+                    })
+      
+      return res.status(200).json({ token })
 
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' })
+    } catch (e) {
+      return res.status(2400).json({ error: e.message })
     }
-    
-    const validPassword = (await user).comparePassword(password)    
-
-    if (!validPassword) {
-      return res.status(401).json({ message: 'Invalid password' })
-    }    
-
-    const token = jwt.sign({ id: (await user)._id }, appConfig.secrets.jwt, {
-                    expiresIn: appConfig.secrets.jwtExp
-                  })
-    
-    return res.status(200).json({ token })
   }
 
   /**

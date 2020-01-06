@@ -33,7 +33,7 @@ const schema = new Schema({
   timestamps: true
 })
 
-schema.pre<UserInterface>('save', async function (next) {
+schema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next()
   }
