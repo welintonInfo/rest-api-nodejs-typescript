@@ -13,19 +13,20 @@ class AuthController {
     }
 
     try {
-      const user = User.findOne({ email }).select('email password')
+      const user = await User.findOne({ email }).select('email password').exec()
+      console.log(email, user)
   
       if (!user) {
         return res.status(401).json({ message: 'User not found' })
       }
       
-      const validPassword = (await user).comparePassword(password)    
+      const validPassword = user.comparePassword(password)    
   
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid password' })
       }    
   
-      const token = jwt.sign({ id: (await user)._id }, appConfig.secrets.jwt, {
+      const token = jwt.sign({ id: user._id }, appConfig.secrets.jwt, {
                       expiresIn: appConfig.secrets.jwtExp
                     })
       

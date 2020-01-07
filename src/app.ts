@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
+import { json, urlencoded } from 'body-parser'
+import morgan from 'morgan'
 
 import routes from './routes'
 import appConfig from './config'
@@ -20,6 +22,9 @@ class App {
   private middlewares (): void {
     this.express.use(express.json())
     this.express.use(cors())
+    this.express.use(json())
+    this.express.use(urlencoded({ extended: true }))
+    this.express.use(morgan('dev'))
     this.express.use('/api', protect)
   }
 

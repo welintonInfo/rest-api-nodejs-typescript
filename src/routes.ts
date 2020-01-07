@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { celebrate, Joi, errors, Segments } from 'celebrate'
 
 import AuthController from './controllers/AuthController'
 import UsersController from './controllers/UsersController'
@@ -6,7 +7,12 @@ import ProductsController from './controllers/ProductsController'
 
 const routes = Router()
 
-routes.post('/login', AuthController.login)
+routes.post('/login', celebrate({
+  body: {
+      email: Joi.string().required(),
+      password: Joi.string().required()
+  }
+}), AuthController.login)
 
 routes.get('/api/users', UsersController.index)
 routes.post('/api/users', UsersController.store)
