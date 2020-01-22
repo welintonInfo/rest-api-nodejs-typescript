@@ -3,6 +3,11 @@ import { Request, Response } from 'express'
 import messages from '../utils/messages'
 import Product from '../schemas/Product'
 
+
+interface MulterRequest extends Request {
+  file: any;
+}
+
 class ProductsController {
 
   /**
@@ -21,9 +26,23 @@ class ProductsController {
    * @param req 
    * @param res 
    */
-  public async store (req: Request, res: Response): Promise<Response> {
+  public async store (req: MulterRequest, res: Response): Promise<Response> {
     try {
-      const doc = await Product.create(req.body)
+      const { originalname, size, key, location: url = '' } = req.file
+      console.log(req.file)
+      const { name, price } = req.body
+      
+      const doc = await Product.create({
+        name,
+        price,
+        image: {
+          name: originalname,
+          size,
+          key,
+          url
+        }
+      })
+
       return res.json({ message: messages.success.new_record, data: doc })      
     } catch (error) {
       return res.json({ error: true, message: error.message }) 
@@ -46,7 +65,7 @@ class ProductsController {
    * @param req.params.id 
    * @param res 
    */
-  public async update (req: Request, res: Response): Promise<Response> {
+  public async update (req: MulterRequest, res: Response): Promise<Response> {
     try {
       const doc = await Product.findOneAndUpdate(
         { _id: req.params.id },

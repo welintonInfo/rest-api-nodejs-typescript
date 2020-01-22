@@ -1,8 +1,10 @@
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
+import path from 'path'
 
 import routes from './routes'
 import appConfig from './config'
@@ -25,6 +27,10 @@ class App {
     this.express.use(json())
     this.express.use(urlencoded({ extended: true }))
     this.express.use(morgan('dev'))
+    this.express.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    )
     this.express.use('/api', protect)
   }
 

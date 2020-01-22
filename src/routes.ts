@@ -1,5 +1,7 @@
 import { Router } from 'express'
 import { celebrate, Joi, errors, Segments } from 'celebrate'
+import multer from 'multer'
+import { multerConfig } from './utils/multer'
 
 import AuthController from './controllers/AuthController'
 import UsersController from './controllers/UsersController'
@@ -19,9 +21,9 @@ routes.post('/api/users', UsersController.store)
 
 // Products
 routes.get('/api/products', ProductsController.index)
-routes.post('/api/products', ProductsController.store)
+routes.post('/api/products', multer(multerConfig).single('file'), ProductsController.store)
 routes.get('/api/products/:id', ProductsController.show)
-routes.put('/api/products/:id', ProductsController.update)
+routes.put('/api/products/:id', multer(multerConfig).single('file'), ProductsController.update)
 routes.delete('/api/products/:id', ProductsController.destroy)
 
 export default routes
